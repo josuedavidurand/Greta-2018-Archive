@@ -1,0 +1,1 @@
+"I:\projet_colibris\mongodb\bin\mongod.exe" --dbpath "I:\projet_colibris\bdd_mongodb_colibris"

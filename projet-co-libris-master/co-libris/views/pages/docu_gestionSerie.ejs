@@ -1,0 +1,100 @@
+<% include head %>
+<% include header %>
+<div class="main">
+    <section class="column avecAlign section1">
+        <div class="maxWidth">
+            <h1>Gestion des série</h1>
+            <p>Dans cet espace vous pouvez visualiser, modifier et supprimé vos séries.</p>
+        </div>
+    </section>
+    <section>
+        <!-- proposition creation de serie -->
+        <article id="undefined">
+            <form>
+                <div>
+                    <input type="file" id="couverture" name="couverture" accept=".jpg .jpeg .png .gif .webp .heif .heic"
+                        class="input-hidden">
+                    <label for="couverture">
+                        <div class="couverture" style="background-color: silver; width: 150px; height: 200px;"></div>
+                    </label>
+                </div>
+                <div class="colonne-inputs">
+                    <input type="text" name="titre" class="input-titre" placeholder="Titre de la série">
+                    <div class="colonneSousTitre">
+                        <div class="colonne-gauche">
+                            <input type="text" name="auteur" placeholder="Auteur">
+                            <input type="text" name="edition" placeholder="Edition">
+                            <input type="text" name="collection" placeholder="Collection">
+                            <input type="date" name="Date de Parution" placeholder="Date de Parution">
+                        </div>
+                        <div class="colonne-droite">
+                            <input type="text" name="Langue" placeholder="Langue">
+                            <input type="number" name="Isbn" placeholder="ISBN" maxlength="13">
+                            <input type="number" name="Nombre d'examplaire" placeholder="Nombre d'examplaire">
+                            <button type="submit">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </article>
+
+        <!-- Template affichage serie -->
+        <article>
+            <div class="row avecAlign serie">
+                <img class="imgSerie marginRight" src="assets/img/imgSerie1.jpg">
+                <div class="divInfo1 row avecAlign">
+                    <div>
+                        <h3 class="marginBot2">Les fourberie de scapin</h3>
+                        <p class="marginBot2">Auteur : Molière</p>
+                        <p class="marginBot2">Editeur : Hachette</p>
+                        <p>Collection : Bibliocollege</p>
+                    </div>
+                    <div>
+                        <h4 class="bold marginBot2">Enseignant : Dufault Paul</h4>
+                        <p>Reçus le 15-04-2018</p>
+                    </div>
+                </div>
+                <div class="rowStart avecAlign marginBot2 divStatut">
+                    <img class="svg2 marginRight" src="assets/img/hourglass-start.svg">
+                    <p>Require vérification</p>
+                </div>
+                <div class="tailleDivFleche">
+                    <img class="svg2" src="assets/img/angle-down.svg">
+                </div>
+            </div>
+        </article>
+
+        <article id="undefined">
+            <form>
+                <div>
+                    <input type="file" id="couverture" name="couverture" accept=".jpg .jpeg .png .gif .webp .heif .heic"
+                        class="input-hidden">
+                    <label for="couverture">
+                        <div class="couverture" style="background-color: silver; width: 150px; height: 200px;"></div>
+                    </label>
+                </div>
+                <div class="colonne-inputs">
+                    <input type="text" name="titre" class="input-titre" placeholder="Titre de la série">
+                    <div class="colonneSousTitre">
+                        <div class="colonne-gauche">
+                            <input type="text" name="auteur" placeholder="Auteur">
+                            <input type="text" name="edition" placeholder="Edition">
+                            <input type="text" name="collection" placeholder="Collection">
+                            <input type="date" name="Date de Parution" placeholder="Date de Parution">
+                        </div>
+                        <div class="colonne-droite">
+                            <input type="text" name="Langue" placeholder="Langue">
+                            <input type="number" name="Isbn" placeholder="ISBN" maxlength="13">
+                            <input type="number" name="Nombre d'examplaire" placeholder="Nombre d'examplaire">
+                            <button type="submit">Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </article>
+    </section>
+    <footer>
+        <!-- Bouton retour haut de page? -->
+    </footer>
+</div>
+<% include footer %>

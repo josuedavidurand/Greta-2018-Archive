@@ -1,0 +1,25 @@
+
+.cover {
+    margin-right: 10px;
+}
+.cover img {
+    height: 150px;
+}
+.content {
+    width: 100%;
+}
+.title-icons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icons a:last-child{
+    margin-left: 10px;
+}
+
+.data-serie {
+    height: 117px; /* Moin taille titre */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,3 @@
+interface interfaceUtilisateur {
+    nom?: string;
+}

@@ -1,0 +1,71 @@
+<p>
+  series works!
+</p>
+
+<section>
+
+  <article *ngFor="let s of lSeries.listeSeries, let i = index">
+
+    <div *ngIf="!s.edit">
+      <div class="cover">
+        <img [src]="s.cover" />
+      </div>
+      <div class="content">
+        <div class="title-icons">
+          <h2>{{s.title}}</h2>
+          <div class="icons">
+            <button>
+              <img src="assets/icons/trash.svg" alt="suprimmé">
+            </button>
+            <button class="edit" (click)="s.edit = !s.edit">
+              <img src="assets/icons/edit-2.svg" alt="éditer">
+            </button>
+          </div>
+        </div>
+
+        <div class="data-serie">
+          <p>Auteur : {{s.author}}</p>
+          <p>Editeur : {{s.publisher}}</p>
+          <p>Collection : {{s.collection}}</p>
+          <p>Date de publication : {{s.publishedDate}}</p>
+          <p>Langue : {{s.language}}</p>
+          <p>ISBN-13: {{s.ISBN13}}</p>
+          <!-- a modifier -->
+          <p>Nombres d'examplaires : {{s.series[0].quantite}}</p>
+        </div>
+      </div>
+    </div>
+
+    <form *ngIf="s.edit" (ngSubmit)="showSubmit(lSeries.listeSeries[i])">
+      <!-- Mettre cliquable avec la solution de jerome / Linkedin -->
+      <div class="cover">
+        <img [src]="s.cover" />
+      </div>
+      <div class="content">
+        <div class="title-icons">
+          <input name="title" [(ngModel)]="s.title" placeholder="Titre du livre">
+          <div class="icons">
+            <button href routerLink="/series">
+              <img src="assets/icons/x.svg" alt="annulé">
+            </button>
+            <button type="submit" class="edit" (click)="s.edit = !s.edit">
+              <img src="assets/icons/check.svg" alt="suavegardé">
+            </button>
+          </div>
+        </div>
+
+        <div class="data-serie">
+          <input type="text" name="auteur" placeholder="Auteur" [(ngModel)]="s.author">
+          <input type="text" name="editeur" placeholder="Editeur" [(ngModel)]="s.publisher">
+          <input type="text" name="collection" placeholder="Collection" [(ngModel)]="s.collection">
+          <input type="text" name="DatePublication" placeholder="Date de publication" [(ngModel)]="s.publishedDate">
+          <input type="text" name="langue" placeholder="Langue" [(ngModel)]="s.language">
+          <input type="text" name="isbn" placeholder="ISBN" [(ngModel)]="s.ISBN13">
+          <input type="text" name="nombresEexamplaires" placeholder="Nombres d'examplaires" [(ngModel)]="s.series[0].quantite">
+        </div>
+      </div>
+    </form>
+
+  </article>
+
+</section>

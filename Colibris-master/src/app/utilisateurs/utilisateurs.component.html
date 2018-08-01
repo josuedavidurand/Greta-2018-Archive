@@ -1,0 +1,42 @@
+<p>
+  utilisateurs works!
+</p>
+
+<section>
+  <article *ngFor="let l of lUtilisateurs.utilisateurs; let i = index">
+
+    <div>
+      <div>
+        <img [src]="s.cover" />
+      </div>
+      <div>
+        <p>Auteur : {{ s.author }}</p>
+        <p>Date de publication : {{ s.publishedDate }}</p>
+        <p>ISBN13 : {{ s.ISBN13 }}</p>
+      </div>
+      <div>
+        <a href [routerLink]="['/series', i]">Editer cette série</a>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section>
+
+  <article>
+    <table>
+      <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Mail</th>
+      </tr>
+      <tr *ngFor="let u of lUtilisateurs.listeUtilisateurs, let i=index">
+        <td>{{u.prenom}}</td>
+        <td>{{u.nom}}</td>
+        <td>{{u.courriel}}</td>
+      </tr>
+
+    </table>
+  </article>
+
+</section>

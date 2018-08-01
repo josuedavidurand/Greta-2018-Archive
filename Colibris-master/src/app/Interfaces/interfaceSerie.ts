@@ -1,0 +1,3 @@
+interface interfaceSerie {
+    author?: string;
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/general.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/documentaliste.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+
+    <head>
+
+        <% include header %>
+            <div class="main selector">
+                <section class="column avecAlign section1">
+                    <div class="maxWidth">
+
+
+                        <form class="column formSearch" action="/docu_recherche" method="POST">
+                            <% if (locals.flash && locals.flash.error) { %>
+                                <div>
+                                    <%= flash.error %>
+                                </div>
+                                <% } %>
+
+                                    <% if (locals.tab_series) { %>
+                                        <div>
+                                            <% for (serie of tab_series) { %>
+                                                <div class="marginBot">
+                                                    <%= serie.titre %>
+                                                </div>
+                               
+                                                <% } %>
+                                        </div>
+                                        <% } %>
+
+
+                                            <div class="row marginBot">
+                                                <input class="policeForm input-search" type="text" name="recherche" id="recherche" autocomplete="off" placeholder="Titre du livre">
+                                                <button class="btn search" type="submit" id="search">Rechercher</button>
+                                            </div>
+                                            <div class="row">
+                                                <div class="row">
+                                                    <button class="date policeForm" type="button" value="1">Sep</button>
+                                                    <button class="date policeForm" type="button" value="2">Oct</button>
+                                                    <button class="date policeForm" type="button" value="3">Nov</button>
+                                                    <button class="date policeForm" type="button" value="4">Dec</button>
+                                                    <button class="date policeForm" type="button" value="5">Jan</button>
+                                                    <button class="date policeForm" type="button" value="6">Fev</button>
+                                                    <button class="date policeForm" type="button" value="7">Mar</button>
+                                                    <button class="date policeForm" type="button" value="8">Avr</button>
+                                                    <button class="date policeForm" type="button" value="9">Mai</button>
+                                                    <button class="date policeForm" type="button" value="10">Jui</button>
+                                                </div>
+                                                <div class="row">
+                                                    <select class="select-search policeForm" name="" id="">
+                                                        <option>Auteur</option>
+                                                    </select>
+                                                    <select class="select-search policeForm" name="" id="">
+                                                        <option>Editeur</option>
+                                                    </select>
+                                                    <select class="select-search policeForm" name="" id="">
+                                                        <option>Collection</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                        </form>
+                    </div>
+                </section>
+                <section class="row avecAlign section2">
+                    <label for="from">From</label>
+                    <input type="text" id="from" name="from">
+                    <label for="to">to</label>
+                    <input type="text" id="to" name="to">
+                </section>
+            </div>
+
+            <script type="text/javascript" src="assets/js/documentaliste.js"></script>
+            <script type="text/javascript" src="assets/json/prets.js"></script>
+            <script type="text/javascript" src="assets/json/series.js"></script>
+            <script type="text/javascript">
+
+                var search = document.getElementById('search')
+                search.addEventListener('click', function () {
+
+                    var titre = document.getElementById('recherche')
+                    var dates = document.getElementsByClassName('check')
+                    var dateSelect = [];
+                    for (var i = 0; i < dates.length; i++) {
+                        var thisDate = dates[i];
+                        var value = thisDate.value;
+                        dateSelect.push(value);
+                    }
+                    let firstDateSelect = dateSelect[0];
+                    let lastDateSelect = dateSelect[dateSelect.length - 1];
+
+                    var seriesSelect = [];
+
+                    for (var y = 0; y < series.length; y++) {
+
+                        let serie = series[y];
+
+                        if (serie.titre == titre.value) {
+
+                            if (serie.pret_valider == null || firstDateSelect == null) {
+
+                                seriesSelect.push(serie);
+
+                            } else if (serie.pret_valider.length == 1) {
+
+                                let pret_valider_seul = serie.pret_valider[0];
+
+                                if (firstDateSelect < pret_valider_seul.mois_debut & lastDateSelect < pret_valider_seul.mois_debut) {
+
+                                    seriesSelect.push(serie);
+
+                                } else if (pret_valider_seul.mois_fin > firstDateSelect) {
+
+                                    seriesSelect.push(serie);
+                                }
+
+                            } else {
+
+                                let nb_pret_valider = serie.pret_valider.length;
+                                let nb_reponse = 0;
+
+                                for (var x = 0; x < serie.pret_valider.length; x++) {
+
+                                    let pret_valider = serie.pret_valider[x];
+
+                                    if (firstDateSelect < pret_valider.mois_debut & lastDateSelect < pret_valider.mois_debut) {
+                                        nb_reponse++;
+                                    } else if (firstDateSelect > pret_valider.mois_fin) {
+                                        nb_reponse++;
+                                    }
+                                }
+                                if (nb_reponse == nb_pret_valider) {
+                                    seriesSelect.push(serie);
+                                }
+                            }
+
+                        }
+                    }
+                    console.log(seriesSelect)
+                });
+
+                var choixDispo = document.getElementsByClassName('date')
+
+                for (var u = 0; u < choixDispo.length; u++) {
+                    let choixSelect = choixDispo[u];
+
+                    choixSelect.addEventListener('click', function () {
+                        if (choixSelect.className == 'date check policeForm') {
+                            choixSelect.className = 'date policeForm'
+                        } else {
+                            choixSelect.className = 'date check policeForm'
+                        }
+                    });
+                }
+
+
+                /*  var myheaders = {
+                      'Content-Type': 'application/x-www-form-urlencoded'
+                  }
+
+                  fetch('http://localhost:8080/search', {
+                      method: 'GET',
+                      headers: myheaders,
+                  })
+                      .then(function (response) {
+                          return response.json();
+                      })
+                      .then(function (datas) {
+                          console.log(datas)
+
+                      });
+
+                      console.log(datas)
+                      
+                      var $listTitres = [];
+                      for (var i = 0; i < datas.length; i++) {
+                          let titre = datas[i];
+                          $listTitres.push(titre);
+                      }*/
+
+                /*var titres =
+                    [
+                        {
+                            id_titre: "1",
+                            titre: "Les fourberie de scapin"
+                        },
+                        {
+                            id_titre: "2",
+                            titre: "L'avare"
+                        },
+                        {
+                            id_titre: "3",
+                            titre: "Le médecin malgré lui"
+                        }
+                    ];
+                var listTitres = [];
+
+                for (var i = 0; i < titres.length; i++) {
+                    let titre = titres[i].titre;
+                    listTitres.push(titre);
+                }
+                console.log(listTitres)
+                */
+                $(function () {
+                    $('#recherche').autocomplete({
+                        source: function (request, response) {
+                            $.ajax({
+                                url: "/search",
+                                type: "GET",
+                                data: request,  // request is the value of search input
+                                success: function (data) {
+                                    console.log(data)
+                                    response(data)
+                                }
+                            });
+                        },
+                        // The minimum number of characters a user must type before a search is performed.
+                        minLength: 1,
+                    });
+
+                });
+
+                $(function () {
+                    var dateFormat = "mm/dd/yy",
+                        from = $("#from")
+                            .datepicker({
+                                defaultDate: "+1w",
+                                minDate: 0,
+                                maxDate: "+10M",
+                                changeMonth: true,
+                                changeYear: true,
+                                closeText: 'Fermer',
+                                prevText: 'Précédent',
+                                nextText: 'Suivant',
+                                currentText: 'Aujourd\'hui',
+                                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                                dayNames: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+                                dayNamesShort: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+                                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                                weekHeader: 'Sem.',
+
+                            })
+                            .on("change", function () {
+                                to.datepicker("option", "minDate", getDate(this));
+                            }),
+                        to = $("#to").datepicker({
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            closeText: 'Fermer',
+                            prevText: 'Précédent',
+                            nextText: 'Suivant',
+                            currentText: 'Aujourd\'hui',
+                            monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                            monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                            dayNames: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+                            dayNamesShort: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+                            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                            weekHeader: 'Sem.',
+
+                        })
+                            .on("change", function () {
+                                from.datepicker("option", "maxDate", getDate(this));
+                            });
+
+                    function getDate(element) {
+                        var date;
+                        try {
+                            date = $.datepicker.parseDate(dateFormat, element.value);
+                        } catch (error) {
+                            date = null;
+                        }
+                        return date;
+                    }
+                });
+                
+            </script>
+            <% include footer %>
